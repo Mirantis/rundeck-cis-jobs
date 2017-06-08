@@ -43,10 +43,10 @@
     secure: true
     storagePath: keys/cis/openstack/domain_id
     valueExposed: true
-  - name: openstack_domain_id
+  - name: elasticsearch
     required: true
     secure: true
-    storagePath: keys/cis/openstack/domain_id
+    storagePath: keys/cis/elasticsearch/url
     valueExposed: true
   orchestrator:
     configuration:
