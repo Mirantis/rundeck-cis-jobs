@@ -21,6 +21,9 @@
   - name: network
     required: true
     value: runbook
+  - name: collector
+    required: true
+    value: /opt/nova
   - name: openstack_auth_url
     required: true
     secure: true
@@ -78,7 +81,7 @@
         --env RD_OPTION_OPENSTACK_PASSWORD
         --env RD_OPTION_OPENSTACK_PROJECT_NAME
         --env RD_OPTION_ELASTICSEARCH
-        --env COLLECTOR=/opt/nova
+        --env COLLECTOR=${option.collector}
         ${option.image}
     keepgoing: false
     pluginConfig:
