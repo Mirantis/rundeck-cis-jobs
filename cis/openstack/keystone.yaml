@@ -18,6 +18,9 @@
   - name: image
     required: true
     value: docker-sandbox.sandbox.mirantis.net/ikharin/oss/cis-openstack:latest
+  - name: network
+    required: true
+    value: runbook
   - name: openstack_auth_url
     required: true
     secure: true
@@ -69,6 +72,7 @@
     - description: run
       exec: >
         docker run --rm
+        --net ${option.network}
         --env RD_OPTION_OPENSTACK_AUTH_URL
         --env RD_OPTION_OPENSTACK_USERNAME
         --env RD_OPTION_OPENSTACK_PASSWORD
