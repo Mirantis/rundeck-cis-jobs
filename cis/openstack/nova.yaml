@@ -17,7 +17,7 @@
   options:
   - name: image
     required: true
-    value: docker-sandbox.sandbox.mirantis.net/ikharin/oss/cis-openstack:latest
+    value: docker-prod-local.artifactory.mirantis.com/mirantis/oss/cis-openstack:latest
   - name: network
     required: true
     value: runbook
