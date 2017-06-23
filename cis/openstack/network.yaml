@@ -1,0 +1,91 @@
+- description: ''
+  executionEnabled: true
+  group: cis/openstack
+  loglevel: INFO
+  loglimit: 100MB
+  loglimitAction: truncate
+  name: network
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      threadcount: 1
+    filter: tags:docker+cicd
+  nodesSelectedByDefault: true
+  options:
+  - name: image
+    required: true
+    value: docker-prod-local.artifactory.mirantis.com/mirantis/oss/cis-openstack:latest
+  - name: network
+    required: true
+    value: runbook
+  - name: collector
+    required: true
+    value: /opt/network
+  - name: openstack_auth_url
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/auth_url
+    valueExposed: true
+  - name: openstack_username
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/username
+    valueExposed: true
+  - name: openstack_password
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/password
+    valueExposed: true
+  - name: openstack_project_name
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/project_name
+    valueExposed: true
+  - name: openstack_domain_id
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/domain_id
+    valueExposed: true
+  - name: elasticsearch
+    required: true
+    secure: true
+    storagePath: keys/cis/elasticsearch/url
+    valueExposed: true
+  orchestrator:
+    configuration:
+      count: '1'
+    type: subset
+  schedule:
+    month: '*'
+    time:
+      hour: '*'
+      minute: 0/20
+      seconds: '0'
+    weekday:
+      day: '*'
+    year: '*'
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - description: pull
+      exec: docker pull ${option.image}
+    - description: run
+      exec: >
+        docker run --rm
+        --net ${option.network}
+        --env RD_OPTION_OPENSTACK_AUTH_URL
+        --env RD_OPTION_OPENSTACK_USERNAME
+        --env RD_OPTION_OPENSTACK_PASSWORD
+        --env RD_OPTION_OPENSTACK_PROJECT_NAME
+        --env RD_OPTION_ELASTICSEARCH
+        --env COLLECTOR=${option.collector}
+        ${option.image}
+    keepgoing: false
+    pluginConfig:
+      WorkflowStrategy:
+        node-first: null
+    strategy: node-first
+  timeout: 8m
