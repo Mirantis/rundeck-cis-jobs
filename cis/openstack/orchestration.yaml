@@ -17,7 +17,9 @@
   options:
   - name: image
     required: true
-    value: docker-prod-local.artifactory.mirantis.com/mirantis/oss/cis-openstack:latest
+    secure: true
+    storagePath: keys/cis/openstack/image
+    valueExposed: true
   - name: network
     required: true
     value: runbook
