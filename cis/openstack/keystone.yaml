@@ -46,6 +46,15 @@
     secure: true
     storagePath: keys/cis/openstack/project_name
     valueExposed: true
+  - name: openstack_cert
+    secure: true
+    storagePath: keys/cis/openstack/cert
+    valueExposed: true
+  - name: openstack_ssl_verify
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/ssl_verify
+    valueExposed: true
   - name: openstack_domain_id
     required: true
     secure: true
@@ -74,6 +83,17 @@
     commands:
     - description: pull
       exec: docker pull ${option.image}
+    - description: ssl_certificates
+      exec: |
+        mkdir certs
+        if ${option.openstack_ssl_verify}; then
+          if [ ! -z "${option.openstack_cert}" ]; then
+            echo ${option.openstack_cert} >> certs/cert.pem
+          else
+            echo 'cert is empty'
+            exit 1
+          fi
+        fi
     - description: run
       exec: >
         docker run --rm
@@ -84,6 +104,8 @@
         --env RD_OPTION_OPENSTACK_PROJECT_NAME
         --env RD_OPTION_ELASTICSEARCH
         --env COLLECTOR=${option.collector}
+        --env OPENSTACK_SSL_VERIFY=${option.openstack_ssl_verify}
+        -v certs/:/opt/certs/:ro
         ${option.image}
     keepgoing: false
     pluginConfig:
