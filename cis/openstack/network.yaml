@@ -50,10 +50,10 @@
     secure: true
     storagePath: keys/cis/openstack/cert
     valueExposed: true
-  - name: openstack_cert_file
+  - name: openstack_ssl_verify
     required: true
     secure: true
-    storagePath: keys/cis/openstack/cert_file
+    storagePath: keys/cis/openstack/ssl_verify
     valueExposed: true
   - name: openstack_domain_id
     required: true
@@ -86,26 +86,26 @@
     - description: ssl_certificates
       exec: |
         mkdir certs
-        if [ ! -z "${option.openstack_cert_file}" ]; then
-          echo ${option.openstack_cert} >> certs/${option.openstack_cert_file}
+        if ${option.openstack_ssl_verify}; then
+          if [ ! -z "${option.openstack_cert}" ]; then
+            echo ${option.openstack_cert} >> certs/cert.pem
+          else
+            echo 'cert is empty'
+            exit 1
+          fi
         fi
     - description: run
-      exec: |
-        if [ ! -z "${option.openstack_cert_file}" ]; then
-          OPENSTACK_SSL_VERIFY=True
-        else
-          OPENSTACK_SSL_VERIFY=False
-        fi
-        docker run --rm \
-        --net ${option.network} \
-        --env RD_OPTION_OPENSTACK_AUTH_URL \
-        --env RD_OPTION_OPENSTACK_USERNAME \
-        --env RD_OPTION_OPENSTACK_PASSWORD \
-        --env RD_OPTION_OPENSTACK_PROJECT_NAME \
-        --env RD_OPTION_ELASTICSEARCH \
-        --env COLLECTOR=${option.collector} \
-        --env OPENSTACK_SSL_VERIFY=$OPENSTACK_SSL_VERIFY \
-        -v certs/:/opt/certs/:ro \
+      exec: >
+        docker run --rm
+        --net ${option.network}
+        --env RD_OPTION_OPENSTACK_AUTH_URL
+        --env RD_OPTION_OPENSTACK_USERNAME
+        --env RD_OPTION_OPENSTACK_PASSWORD
+        --env RD_OPTION_OPENSTACK_PROJECT_NAME
+        --env RD_OPTION_ELASTICSEARCH
+        --env COLLECTOR=${option.collector}
+        --env OPENSTACK_SSL_VERIFY=${option.openstack_ssl_verify}
+        -v certs/:/opt/certs/:ro
         ${option.image}
     keepgoing: false
     pluginConfig:
