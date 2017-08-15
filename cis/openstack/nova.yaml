@@ -84,10 +84,10 @@
     - description: pull
       exec: docker pull ${option.image}
     - description: ssl_certificates
-      exec: mkdir certs; test -z "${option.openstack_cert_file}" && echo ${option.openstack_cert} >> certs/${option.openstack_cert_file}
+      exec: set -ex; rm -rf certs; mkdir certs; [ ! -z "${option.openstack_cert_file}" ] && echo ${option.openstack_cert} >> certs/${option.openstack_cert_file}
     - description: run
       exec: >
-        test -z "${option.openstack_cert_file}" && OPENSTACK_SSL_VERIFY=True || OPENSTACK_SSL_VERIFY=False ;
+        set -ex; [ ! -z "${option.openstack_cert_file}" ]  && OPENSTACK_SSL_VERIFY=True || OPENSTACK_SSL_VERIFY=False ;
         docker run --rm
         --net ${option.network}
         --env RD_OPTION_OPENSTACK_AUTH_URL
