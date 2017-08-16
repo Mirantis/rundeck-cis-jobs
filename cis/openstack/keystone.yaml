@@ -95,7 +95,7 @@
         --env RD_OPTION_ELASTICSEARCH
         --env COLLECTOR=${option.collector}
         --env OPENSTACK_SSL_VERIFY=$OPENSTACK_SSL_VERIFY
-        -v keys/cis/openstack/cert.pem:/opt/certs/cert.pem:ro
+        -v /srv/volumes/rundeck/storage/content/keys/cis/openstack/cert.pem:/opt/certs/cert.pem:ro
         ${option.image}
     keepgoing: false
     pluginConfig:
