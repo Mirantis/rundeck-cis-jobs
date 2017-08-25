@@ -105,4 +105,4 @@
       WorkflowStrategy:
         node-first: null
     strategy: node-first
-  timeout: 8m
+  timeout: 12m
