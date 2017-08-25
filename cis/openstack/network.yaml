@@ -27,8 +27,7 @@
     required: true
     value: /opt/network
   - name: debug_mode
-    required: true
-    value: False
+    value: "False"
   - name: openstack_auth_url
     required: true
     secure: true
