@@ -26,6 +26,9 @@
   - name: collector
     required: true
     value: /opt/network
+  - name: debug_mode
+    required: true
+    value: False
   - name: openstack_auth_url
     required: true
     secure: true
@@ -95,6 +98,7 @@
         --env RD_OPTION_ELASTICSEARCH
         --env COLLECTOR=${option.collector}
         --env OPENSTACK_SSL_VERIFY=$OPENSTACK_SSL_VERIFY
+        --env DEBUG_MODE=${option.debug_mode}
         -v /srv/volumes/rundeck/storage/content/keys/cis/openstack/cert.pem:/opt/certs/cert.pem:ro
         ${option.image}
     keepgoing: false
