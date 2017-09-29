@@ -22,7 +22,7 @@
     valueExposed: true
   - name: network
     required: true
-    value: runbook
+    value: oss_backend
   - name: collector
     required: true
     value: /opt/nova
