@@ -33,6 +33,11 @@
     secure: true
     storagePath: keys/cis/openstack/auth_url
     valueExposed: true
+  - name: openstack_endpoint_type
+    required: true
+    secure: true
+    storagePath: keys/cis/openstack/endpoint_type
+    valueExposed: true
   - name: openstack_username
     required: true
     secure: true
@@ -91,6 +96,7 @@
         docker run --rm
         --net ${option.network}
         --env RD_OPTION_OPENSTACK_AUTH_URL
+        --env RD_OPTION_OPENSTACK_ENDPOINT_TYPE
         --env RD_OPTION_OPENSTACK_USERNAME
         --env RD_OPTION_OPENSTACK_PASSWORD
         --env RD_OPTION_OPENSTACK_PROJECT_NAME
